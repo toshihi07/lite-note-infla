@@ -1,0 +1,15 @@
+# Terraform state
+*.tfstate
+*.tfstate.backup
+
+# crashログ
+crash.log
+
+# terraform.tfvars（秘匿情報）
+environments/*/terraform.tfvars
+
+# .terraform ディレクトリ（初期化後のローカルプラグインなど）
+.terraform/
+
+# terraform plan出力
+*.tfplan
