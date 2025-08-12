@@ -45,10 +45,7 @@ lite-note-infra/
 │ ├── cloudwatch/
 │ └── sns/
 └── README.md  
-└── README.md  
-└── README.md  
-└── README.md  
-└── README.md
+
 
 ## 各ファイルの役割と定義内容
 
@@ -65,8 +62,6 @@ lite-note-infra/
 | ----------------- | -------------------------------------------------- |
 | `vpc/` | VPC 本体、サブネット、ルートテーブル、Internet Gateway、NAT Gateway など |
 | `security_group/` | 各種 Security Group（ALB 用、ECS 用、Lambda 用、RDS 用など） |
-| `alb/` | ALB + TargetGroup + Listener、HTTPS 設定 |
-| `ecs/` | ECS Cluster, Service, Task Definition、必要な IAM ロール |
 | `s3/` | 静的サイトホスティング用の S3 バケット（フロントエンド） |
 | `cloudfront/` | CloudFront ディストリビューションと S3 の連携、ACM 証明書 |
 | `acm/` | TLS 証明書（ACM）の取得、Route53 との連携（DNS 検証） |
@@ -207,3 +202,19 @@ terraform apply -var-file=environments/dev/terraform.tfvars
 ---
 
 次は `modules/route53/` 以下に不要となった `data "aws_route53_zone"` の削除と `variables.tf` の整理を行いましょうか？
+
+③ S3	静的ホスティング or アセット格納バケット作成	次やる
+ ディレクトリ構成（前提）
+ modules/
+└── s3_static_site/
+    ├── main.tf
+    ├── outputs.tf
+    └── variables.tf
+
+terraform taint module.api_gateway.aws_api_gateway_deployment.this
+terraform apply   
+
+curl https://mlxi90v6ah.execute-api.ap-northeast-1.amazonaws.com/dev/hello \
+  -H "Authorization: Bearer eyJraWQiOiJSRmFYT0JhMVBzYUxodXFLckQ3VW9BTmNJVlN6b1IxSjJVcnc0cGMyWTlNPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoiMnhxVzI5X29EcUR0dElmYlBLalpiZyIsInN1YiI6Ijk3ZTQwYTQ4LTIwMDEtNzAyMS00Y2IzLWUxNTE0MjZlOGM2NiIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9mRUpBN25pc1oiLCJjb2duaXRvOnVzZXJuYW1lIjoiOTdlNDBhNDgtMjAwMS03MDIxLTRjYjMtZTE1MTQyNmU4YzY2Iiwib3JpZ2luX2p0aSI6IjdkOWQzMjY4LWJiNGQtNDBiOC1hMzBkLTBiZWY4MmEwMDZkMCIsImF1ZCI6IjR2ZmQ5ZTJ1ajZrc2MwcHFuN2hmYW5tbnF0IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE3NTM2ODQwNjMsImV4cCI6MTc1MzY4NzY2MywiaWF0IjoxNzUzNjg0MDYzLCJqdGkiOiJjNWRkZTJhNS1kYTBlLTQ5ZTItYTdkYS04M2ZkZjFlNDVjMTYiLCJlbWFpbCI6InRvc2hpaGkwNzE3QGdtYWlsLmNvbSJ9.PiGJiX-h375WE-FZYRmMD4taezrpPedcu4kOG0v8m-EOTMA_aAmvkxOusZyTyjATjjxsMpiOXnzHgNiA-Vq2zh5yB2id6nNrbNgKUhEO3nxPmIUcJvqdwbDcHQ6jOGBLwIk_QNslgVBjqXsCOKuBE3wpFHbghVBVOJW1-qEKZALToIt0X4wKj-YSOezItPvJWRaMRW5XTsSxjfarHhSy2FG7Bas6Zc24Twe6nFNAuYy8jET5N7AzjBAis3vviQDGVqv2EDnKC9G6Mm-noRB51lEt_fpll_qSjdws421B8VvH9AVyvv2YWxSZji61AJ8KyTkG1SynG0GoY5TiX1-DtQ"
+
+  

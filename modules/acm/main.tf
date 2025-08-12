@@ -10,9 +10,9 @@ terraform {
 }
 
 resource "aws_acm_certificate" "this" {
-  provider          = aws
-  domain_name       = var.domain_name
-  validation_method = "DNS"
+  domain_name               = var.domain_name           # ここを "litenote.click" にしたままでOK
+  subject_alternative_names = ["static.litenote.click"] # ← これを追加
+  validation_method         = "DNS"
 
   lifecycle {
     create_before_destroy = true
